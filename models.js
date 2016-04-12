@@ -13,7 +13,7 @@ var path = require('path');
 var modelDir = path.resolve(__dirname, './models');
 var modelList = fs.readdirSync(modelDir);
 var dbConf = require('./database');
-var database = dbConf['dev'];
+var database = dbConf['p2pspider'];
 var schema = new Schema(database.driver, database);
 
 module.exports.init = function (app) {
