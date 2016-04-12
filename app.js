@@ -1,9 +1,25 @@
 ﻿'use strict';
 
+var log4js = require('log4js');
 var models = require('./models');
 var P2PSpider = require('./lib')
 
-var app = {};
+log4js.configure({
+  appenders: [
+    { type: 'console' }, //控制台输出
+    {
+      type: 'file', //文件输出
+      filename: 'logs/p2pspider.log', 
+      maxLogSize: 1024,
+      backups:3,
+      category: 'normal' 
+    }
+  ]
+});
+
+var app = {
+    logger : log4js.getLogger('normal')
+};
 
 models.init(app);
 
@@ -68,11 +84,12 @@ var saveMetadata = function(metadata,cb){
 
 var checkFunc = function(infohash,cb){
     try{
+        //app.logger.info("check",infohash);
         app.models.Torrent.findOne({where:{id: infohash}},function(err,result){
             if(!err&&result){
                 app.models.Torrent.update({id:result.id},{lastupdated:new Date()},function(err,t){
                     if(err){
-                        console.log("updated err");
+                        app.logger.warn('updated err', result);
                     }
                 });
             }
@@ -85,6 +102,9 @@ var checkFunc = function(infohash,cb){
 
 p2p.ignore(function (infohash, rinfo, callback) {
     checkFunc(infohash,function(err,result){
+        if(err){
+            app.logger.error(err);
+        }
         callback(!!result);
     })
 });
@@ -92,10 +112,15 @@ p2p.ignore(function (infohash, rinfo, callback) {
 p2p.on('metadata', function (metadata) {
     saveMetadata(metadata,function(err,result){
         if(err){
-            console.log(err.title,result?result.name:err.err);
+            if(result){
+                app.logger.warn(err.title, result);
+            }else{
+                app.logger.error(err.title, err.err);
+            }
+            
             return;
         }
-        console.log("saved ->",result.name);
+        app.logger.info("saved ->",result.name);
     });
 });
 

@@ -1,40 +1,41 @@
 {
-    "name": "p2pspider",
-    "description": "DHT Spider + BitTorrent Client = P2P Spider",
-    "version": "0.1.1",
-    "author": {
-        "name": "allen"
-    },
-    "repository": "https://github.com/alienblog/p2pspider",
-    "main": "lib/index.js",
-    "bugs": {
-        "url": "https://github.com/alienblog/p2pspider/issues"
-    },
-    "scripts": {
-        "test": "mocha -r should -R spec"
-    },
-    "dependencies": {
-        "bencode": "^0.7.0",
-        "bitfield": "^1.1.2",
-        "caminte": "^0.2.7",
-        "underscore": "latest",
-        "mysql": ">= 2.0.0"
-    },
-    "keywords": [
-        "torrent",
-        "bittorrent",
-        "p2p",
-        "dht"
-    ],
-    "license": "MIT",
-    "caminte": {
-        "adapter": "mysql"
-    },
-    "devDependencies": {
-        "mocha": "latest",
-        "should": "latest",
-        "superagent": "latest",
-        "istanbul": "latest",
-        "jshint": "2.x"
-    }
+  "name": "p2pspider",
+  "description": "DHT Spider + BitTorrent Client = P2P Spider",
+  "version": "0.1.1",
+  "author": {
+    "name": "allen"
+  },
+  "repository": "https://github.com/alienblog/p2pspider",
+  "main": "lib/index.js",
+  "bugs": {
+    "url": "https://github.com/alienblog/p2pspider/issues"
+  },
+  "scripts": {
+    "test": "mocha -r should -R spec"
+  },
+  "dependencies": {
+    "bencode": "^0.7.0",
+    "bitfield": "^1.1.2",
+    "caminte": "^0.2.7",
+    "log4js": "^0.6.33",
+    "mysql": ">= 2.0.0",
+    "underscore": "latest"
+  },
+  "keywords": [
+    "torrent",
+    "bittorrent",
+    "p2p",
+    "dht"
+  ],
+  "license": "MIT",
+  "caminte": {
+    "adapter": "mysql"
+  },
+  "devDependencies": {
+    "mocha": "latest",
+    "should": "latest",
+    "superagent": "latest",
+    "istanbul": "latest",
+    "jshint": "2.x"
+  }
 }
