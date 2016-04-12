@@ -1,25 +1,40 @@
 {
-  "name": "p2pspider",
-  "description": "DHT Spider + BitTorrent Client = P2P Spider",
-  "version": "0.0.8",
-  "author": {
-    "name": "Fuck-You-GFW"
-  },
-  "repository": "https://github.com/Fuck-You-GFW/p2pspider",
-  "main": "lib/index.js",
-  "bugs": {
-    "url": "https://github.com/Fuck-You-GFW/p2pspider/issues"
-  },
-  "scripts": {},
-  "dependencies": {
-    "bencode": "^0.7.0",
-    "bitfield": "^1.1.2"
-  },
-  "keywords": [
-    "torrent",
-    "bittorrent",
-    "p2p",
-    "dht"
-  ],
-  "license": "MIT"
+    "name": "p2pspider",
+    "description": "DHT Spider + BitTorrent Client = P2P Spider",
+    "version": "0.0.8",
+    "author": {
+        "name": "Fuck-You-GFW"
+    },
+    "repository": "https://github.com/Fuck-You-GFW/p2pspider",
+    "main": "lib/index.js",
+    "bugs": {
+        "url": "https://github.com/Fuck-You-GFW/p2pspider/issues"
+    },
+    "scripts": {
+        "test": "mocha -r should -R spec"
+    },
+    "dependencies": {
+        "bencode": "^0.7.0",
+        "bitfield": "^1.1.2",
+        "caminte": "^0.2.7",
+        "underscore": "latest",
+        "mysql": ">= 2.0.0"
+    },
+    "keywords": [
+        "torrent",
+        "bittorrent",
+        "p2p",
+        "dht"
+    ],
+    "license": "MIT",
+    "caminte": {
+        "adapter": "mysql"
+    },
+    "devDependencies": {
+        "mocha": "latest",
+        "should": "latest",
+        "superagent": "latest",
+        "istanbul": "latest",
+        "jshint": "2.x"
+    }
 }
