@@ -12,4 +12,4 @@ CREATE TABLE `torrent` (
 
 ALTER TABLE `torrent`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `order_index` (`lastupdated`);
+  ADD KEY `order_index` (`created`);

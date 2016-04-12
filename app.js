@@ -26,60 +26,77 @@ function getFileString(info){
     return files;
 }
 
-p2p.ignore(function (infohash, rinfo, callback) {
-    //console.log("ignore",infohash);
-    //app.Torrent.count({where:{hash: infohash}},function(err,result){
-    //	console.log(result);
-    //	callback(!result);
-    //});
-    app.models.Torrent.findOne({where:{id: infohash}},function(err,result){
-        if(!err&&result){
-            result.lastupdated = new Date();
-            app.models.Torrent.update({id:result.id},result,function(err,t){
+var saveMetadata = function(metadata,cb){
+    try{
+        if(metadata&&metadata.info&&metadata.info.name){
+            var torrent = {};
+            torrent.id = metadata.infohash;
+            torrent.created = new Date();
+            torrent.lastupdated = new Date();
+            torrent.name = metadata.info.name.toString();
+            
+            var info = metadata.info;
+            
+            var length = 0;
+            for(var f in info.files){
+                length += info.files[f].length;
+            }
+            if(length==0&&info.length)
+                length = info.length;
+            torrent.length = length;
+            torrent.files = getFileString(info);
+
+            //fs.writeFile(dataDir+'/'+torrent.info.name+".json",JSON.stringify(torrent),function(err){
+            //   if(err){
+            //       console.log(err);
+            //       return;
+            //   }
+            //});
+            //console.log(torrent);
+            app.models.Torrent.create(torrent,function(err,t){
                 if(err){
-                    console.error(err);
-                }
+                    cb({title:'save err',err:err},torrent);
+                }else{
+                    cb(null,t);
+                } 
             });
         }
+    }catch(e){
+        cb({title:'unknow err',err:e},null);
+    }
+};
+
+var checkFunc = function(infohash,cb){
+    try{
+        app.models.Torrent.findOne({where:{id: infohash}},function(err,result){
+            if(!err&&result){
+                app.models.Torrent.update({id:result.id},{lastupdated:new Date()},function(err,t){
+                    if(err){
+                        console.log("updated err");
+                    }
+                });
+            }
+            cb(null,result);
+        });
+    }catch(e){
+        cb(e,null);
+    }
+}
+
+p2p.ignore(function (infohash, rinfo, callback) {
+    checkFunc(infohash,function(err,result){
         callback(!!result);
-    });
-    //callback(false);
+    })
 });
 
 p2p.on('metadata', function (metadata) {
-    if(metadata&&metadata.info&&metadata.info.name){
-        var torrent = {};
-        torrent.id = metadata.infohash;
-        torrent.created = new Date();
-        torrent.lastupdated = new Date();
-        torrent.name = metadata.info.name.toString();
-        
-        var info = metadata.info;
-        
-        var length = 0;
-        for(var f in info.files){
-            length += info.files[f].length;
+    saveMetadata(metadata,function(err,result){
+        if(err){
+            console.log(err.title,result?result.name:err.err);
+            return;
         }
-        if(length==0&&info.length)
-            length = info.length;
-        torrent.length = length;
-        torrent.files = getFileString(info);
-
-        //fs.writeFile(dataDir+'/'+torrent.info.name+".json",JSON.stringify(torrent),function(err){
-        //   if(err){
-        //       console.log(err);
-        //       return;
-        //   }
-        //});
-        //console.log(torrent);
-        app.models.Torrent.create(torrent,function(err,t){
-           if(err){
-               console.error("save error",t.name,err);
-           }else{
-             console.info("saved",t.id,t.name);  
-           } 
-        });
-    }
+        console.log("saved ->",result.name);
+    });
 });
 
 p2p.listen(6881, '0.0.0.0');

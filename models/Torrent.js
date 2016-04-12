@@ -24,11 +24,5 @@ module.exports = function(schema){
 
     });
 
-    Torrent.afterUpdate = function(next){
-      this.lastupdated = new Date();
-      this.save();
-      next();
-    }
-
     return Torrent;
 };

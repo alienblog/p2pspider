@@ -17,3 +17,13 @@ module.exports.p2pspider = {
     database   : process.env.MYSQL_DBNAME,
     autoReconnect : true
 };
+
+module.exports.dev = {
+    driver     : 'mysql',
+    host       : '192.168.1.227',
+    port       : 3306,
+    username   : 'p2pspider',
+    password   : 'p2pspider',
+    database   : 'p2pspider',
+    autoReconnect : true
+};
