@@ -30,16 +30,13 @@ var p2p = P2PSpider({
 });
 
 function getFileString(info){
-    var files = "";
+    var files = [];
     for(var f in info.files){
         var file = info.files[f];
         var l = files.length;
-        files+=file.path+"|"+file.length;
-        if(l==0&&files.length>0){
-            files+="*";
-        }
+        files.push(file.path+"|"+file.length);
     }
-    return files;
+    return files.join('*');
 }
 
 var saveMetadata = function(metadata,cb){
