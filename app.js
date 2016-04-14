@@ -107,6 +107,12 @@ p2p.ignore(function (infohash, rinfo, callback) {
 });
 
 p2p.on('metadata', function (metadata) {
+    if(metadata&&metadata.info&&metadata.info.name){
+        //if contains Rassian, ignore it
+        if(/[а-яА-ЯЁё]/.test(metadata.info.name.toString())){
+            return;
+        }
+    }
     saveMetadata(metadata,function(err,result){
         if(err){
             if(result){
